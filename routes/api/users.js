@@ -5,10 +5,16 @@ const User = require('../../models/User');
 const keys = require('../../config/keys');
 const jsonwebtoken = require('jsonwebtoken');
 const passport = require('passport');
+const validateRegisterInput = require('../../validations/register');
+const validateLoginInput = require('../../validations/login');
 router.get("/test", (req, res) => res.json({ msg: "This is the users route" }));
 
 router.post('/register', (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
+    const { errors, isValid } = validateRegisterInput(req.body);
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
     User.findOne({email: req.body.email})
         .then(user => {
             if (user) {
@@ -37,9 +43,13 @@ router.post('/register', (req, res) => {
 })
 
 router.post('/login', (req, res) => {
+    // console.log(req.body)
+    const { errors, isValid } = validateLoginInput(req.body);
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
     const email = req.body.email;
     const password = req.body.password;
-    console.log(req.body)
     User.findOne({email})
         .then( user => {
             if(!user) {
