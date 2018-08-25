@@ -5,10 +5,10 @@ const UserSchema = new Schema({
     name: {
         type: String,
         required: [true, 'Name is required'],
-        validate: {
-            validator: (name) => name.length > 1,
-            message: "Name must be atleast two characters long"
-        }
+        // validate: {
+        //     validator: (name) => name.length > 1,
+        //     message: "Name must be atleast two characters long"
+        // }
     },
     email: {
         type: String,
@@ -17,10 +17,10 @@ const UserSchema = new Schema({
     password: {
         type: String,
         required: [true, "Password is required"],
-        validate: {
-            validator: (pass) => pass.length > 5,
-            message: "Password must be atleast 6 characters long"
-        }
+        // validate: {
+        //     validator: (pass) => pass.length > 5,
+        //     message: "Password must be atleast 6 characters long"
+        // }
     },
     date: {
         type: Date,
