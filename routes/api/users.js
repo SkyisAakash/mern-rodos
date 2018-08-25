@@ -5,6 +5,7 @@ const User = require('../../models/User');
 router.get("/test", (req, res) => res.json({ msg: "This is the users route" }));
 
 router.post('/register', (req, res) => {
+    console.log(req.body);
     User.findOne({email: req.body.email})
         .then(user => {
             if (user) {
@@ -14,6 +15,16 @@ router.post('/register', (req, res) => {
                     name: req.body.name,
                     email: req.body.email,
                     password: req.body.password
+                })
+                bcrypt.genSalt(10, (err, salt) => {
+                    bcrypt.hash(newUser.password, salt, (hash, err) => {
+                        // console.log(err + '--------------');
+                        if (err) throw err;
+                        newUser.password = hash;
+                        newUser.save()
+                            .then(user => res.json(user))
+                            .catch(err => console.log(err));
+                    })
                 })
             }
         })
